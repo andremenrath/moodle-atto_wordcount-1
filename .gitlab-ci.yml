@@ -1,3 +1,11 @@
 include:
   - project: '715-scrum1/grp_moodle/continuous-integration'
     file: '.gitlab-ci-template.yml'
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploy the plugin"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
