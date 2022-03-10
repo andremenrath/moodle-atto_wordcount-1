@@ -15,7 +15,7 @@ moodle_plugin_ci:
     MOODLE_DIR: "/var/www/html/moodle"
     MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
     MOODLE_START_BEHAT_SERVERS: "NO"
-    MOODLE_REPO: "ssh://gitolite@git.tsc.tuwien.ac.at/moodle-core.git"
+    MOODLE_REPO: "https://gitlab-ci-token:${MOODLE_CORE_READ_ONLY}@gitlab.uni-graz.at/715-scrum1/grp_moodle/moodle.git"
     NODE_VERSION: "16.14.0"
   cache:
     paths:
@@ -45,13 +45,13 @@ moodle_plugin_ci:
     # Install Moodle (ommit the --moodle argument if not needed)
     - cd $CI_PROJECT_DIR
     # Install AMC Keys
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan git.tsc.tuwien.ac.at >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+    # - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    # - eval $(ssh-agent -s)
+    # - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
+    # - mkdir -p ~/.ssh
+    # - chmod 700 ~/.ssh
+    # - ssh-keyscan git.tsc.tuwien.ac.at >> ~/.ssh/known_hosts
+    # - chmod 644 ~/.ssh/known_hosts
     # Install at least the university boost theme
     # - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH --clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost
     - moodle-plugin-ci install --moodle=$MOODLE_DIR --db-type=pgsql --db-host=postgres --no-init -vvv
