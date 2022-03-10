@@ -54,7 +54,7 @@ moodle_plugin_ci:
     # - chmod 644 ~/.ssh/known_hosts
     # Install at least the university boost theme
     # - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH --clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost
-    - moodle-plugin-ci install --db-type=pgsql --db-host=postgres  -vvv
+    - moodle-plugin-ci install --moodle=$MOODLE_DIR --db-type=pgsql --db-host=postgres -vvv
     # - cd $MOODLE_DIR
     # - php -S $IPADDRESS:8000 -t $MOODLE_DIR > /dev/null 2>&1 &
     # - php admin/tool/behat/cli/init.php --add-core-features-to-theme --parallel=1 --optimize-runs=@local_ffhs_exam_toolbox
