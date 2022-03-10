@@ -15,7 +15,7 @@ moodle_plugin_ci:
     MOODLE_DIR: "/var/www/html/moodle"
     MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
     MOODLE_START_BEHAT_SERVERS: "NO"
-    MOODLE_REPO: "https://gitlab-ci-token:${MOODLE_CORE_READ_ONLY}@gitlab.uni-graz.at/715-scrum1/grp_moodle/moodle.git"
+    MOODLE_REPO: "ssh://gitolite@git.tsc.tuwien.ac.at/moodle-core"
     NODE_VERSION: "16.14.0"
   cache:
     paths:
@@ -44,6 +44,15 @@ moodle_plugin_ci:
     - umask u+x
     # Install Moodle (ommit the --moodle argument if not needed)
     - cd $CI_PROJECT_DIR
+    # Install AMC Keys
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - SSH_PRIVATE_KEY_AMC = "$(echo SSH_PRIVATE_KEY_AMC_BASE64 | base64 -d)"
+    - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    # Install at least the university boost theme
+    # - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH --clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost
     - moodle-plugin-ci install --moodle=$MOODLE_DIR --db-type=pgsql --db-host=postgres --no-init -vvv
     - cd $MOODLE_DIR
     - php -S $IPADDRESS:8000 -t $MOODLE_DIR > /dev/null 2>&1 &
