@@ -1,3 +1,3 @@
 include:
   - project: '715-scrum1/grp_moodle/continuous-integration'
-    file: '.gitlab-ci-template.yml'
+    file: '.gitlab-ci-template-one-job-only.yml'
