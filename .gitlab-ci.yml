@@ -2,6 +2,9 @@ stages:
   - test
   - deploy
 
+variables:
+  PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
+
 moodle_plugin_ci:
   stage: test
   image: $MOODLE_PHP_IMAGE
@@ -79,9 +82,13 @@ moodle_plugin_ci:
 
 deploy_dev:
   stage: deploy
+  before_script:
+  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
   script:
-    - pwd
-    - ls -l
-    # - ssh root@143.50.129.58 "cd /moodle/www/dev/lib/editor/atto/plugins && git clone"
+    - rsync -avuz $CI_PROJECT_DIR/ root@143.50.129.58:/moodle/www/dev/$PLUGIN_PATH
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
