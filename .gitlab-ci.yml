@@ -1,5 +1,5 @@
 stages:
-  - test
+  # - test
   - deploy
 
 moodle_plugin_ci:
@@ -80,6 +80,8 @@ moodle_plugin_ci:
 deploy_dev:
   stage: deploy
   script:
-    - ssh root@example.com "cd var/www/ && git checkout master && git pull origin master && exit"
+    - pwd
+    - ls -l
+    # - ssh root@143.50.129.58 "cd /moodle/www/dev/lib/editor/atto/plugins && git clone"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
