@@ -47,7 +47,7 @@ moodle_plugin_ci:
     # Install AMC Keys
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - echo $(echo $SSH_PRIVATE_KEY_AMC_BASE64 | base64 -d) | tr -d '\n' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     # Install at least the university boost theme
