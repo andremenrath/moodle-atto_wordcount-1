@@ -50,7 +50,7 @@ moodle_plugin_ci:
     - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+    - ssh-keyscan git.tsc.tuwien.ac.at >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     # Install at least the university boost theme
     # - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH --clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost
