@@ -1,27 +1,27 @@
-image: $MOODLE_PHP_IMAGE
-
-services:
-  - $POSTGRES_IMAGE
-  - name: selenium/standalone-chrome:3
-    alias: selenium-standalone-chrome
-
-variables:
-  DB: "pgsql"
-  POSTGRES_HOST_AUTH_METHOD: trust
-  # Only needed, when your project is within a group/subgroup of "moodle".
-  MOODLE_DIR: "/var/www/html/moodle"
-  MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
-  MOODLE_START_BEHAT_SERVERS: "NO"
-  MOODLE_REPO: "https://gitlab-ci-token:${MOODLE_CORE_READ_ONLY}@gitlab.uni-graz.at/715-scrum1/grp_moodle/moodle.git"
-  NODE_VERSION: "16.14.0"
-
-cache:
-  paths:
-    - .composer/cache
-    - $MOODLE_DIR
+stages:
+  - test
+  - deploy
 
 moodle_plugin_ci:
   stage: test
+  image: $MOODLE_PHP_IMAGE
+  services:
+  - $POSTGRES_IMAGE
+  - name: selenium/standalone-chrome:3
+    alias: selenium-standalone-chrome
+  variables:
+    DB: "pgsql"
+    POSTGRES_HOST_AUTH_METHOD: trust
+    # Only needed, when your project is within a group/subgroup of "moodle".
+    MOODLE_DIR: "/var/www/html/moodle"
+    MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
+    MOODLE_START_BEHAT_SERVERS: "NO"
+    MOODLE_REPO: "https://gitlab-ci-token:${MOODLE_CORE_READ_ONLY}@gitlab.uni-graz.at/715-scrum1/grp_moodle/moodle.git"
+    NODE_VERSION: "16.14.0"
+  cache:
+    paths:
+      - .composer/cache
+      - $MOODLE_DIR
   before_script:
     # Update packages and install mysql-client.
     - apt update && apt install -y postgresql-client postgresql-client-common
