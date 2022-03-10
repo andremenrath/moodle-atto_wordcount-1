@@ -12,7 +12,6 @@ moodle_plugin_ci:
   variables:
     DB: "pgsql"
     POSTGRES_HOST_AUTH_METHOD: trust
-    # Only needed, when your project is within a group/subgroup of "moodle".
     MOODLE_DIR: "/var/www/html/moodle"
     MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
     MOODLE_START_BEHAT_SERVERS: "NO"
@@ -22,6 +21,7 @@ moodle_plugin_ci:
     paths:
       - .composer/cache
       - $MOODLE_DIR
+      - $CI_PROJECT_DIR/ci
   before_script:
     # Update packages and install mysql-client.
     - apt update && apt install -y postgresql-client postgresql-client-common
@@ -70,6 +70,6 @@ moodle_plugin_ci:
 deploy_dev:
   stage: deploy
   script:
-    - echo "Deploy the plugin to the dev"
+    - ssh root@example.com "cd var/www/ && git checkout master && git pull origin master && exit"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
