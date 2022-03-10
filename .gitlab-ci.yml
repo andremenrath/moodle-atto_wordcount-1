@@ -1,5 +1,5 @@
 stages:
-  # - test
+  - test
   - deploy
 
 moodle_plugin_ci:
