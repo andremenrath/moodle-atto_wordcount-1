@@ -15,7 +15,7 @@ moodle_plugin_ci:
     MOODLE_DIR: "/var/www/html/moodle"
     MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
     MOODLE_START_BEHAT_SERVERS: "NO"
-    MOODLE_REPO: "ssh://gitolite@git.tsc.tuwien.ac.at/moodle-core"
+    MOODLE_REPO: "ssh://gitolite@git.tsc.tuwien.ac.at/moodle-core.git"
     NODE_VERSION: "16.14.0"
   cache:
     paths:
