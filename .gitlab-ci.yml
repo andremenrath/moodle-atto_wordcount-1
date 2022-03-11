@@ -54,9 +54,12 @@ moodle_plugin_ci:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - ssh-add -l
-    # - ssh-keyscan git.tsc.tuwien.ac.at >> ~/.ssh/known_hosts
-    # - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "andre.menrath@uni-graz.at"
+    - git config --global user.name "André Menrath"
+    - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+    - chmod 644 ~/.ssh/known_hosts
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - git clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-mod_actsupport.git
     # Install at least the university boost theme
     - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH --clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-mod_actsupport.git
     - moodle-plugin-ci install --moodle=$MOODLE_DIR --db-type=pgsql --db-host=postgres -vvv
