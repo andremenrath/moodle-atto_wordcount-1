@@ -56,7 +56,7 @@ moodle_plugin_ci:
     - ssh-add -l
     - git config --global user.email "andre.menrath@uni-graz.at"
     - git config --global user.name "André Menrath"
-    - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+    - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - git clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-mod_actsupport.git
