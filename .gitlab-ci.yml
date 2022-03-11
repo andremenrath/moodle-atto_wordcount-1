@@ -1,7 +1,6 @@
 stages:
   - deploy
 
-
 deploy_dev:
   variables:
     MOODLE_ROOT: "/moodle/www/dev/"
