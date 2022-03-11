@@ -1,98 +1,14 @@
-stages:
-  - test
-  - deploy
+image: alpine:latest
 
-variables:
-  PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
-
-moodle_plugin_ci:
-  stage: test
-  image: $MOODLE_PHP_IMAGE
-  services:
-  - $POSTGRES_IMAGE
-  - name: selenium/standalone-chrome:3
-    alias: selenium-standalone-chrome
-  variables:
-    DB: "pgsql"
-    POSTGRES_HOST_AUTH_METHOD: trust
-    MOODLE_DIR: "/var/www/html/moodle"
-    MOODLE_BEHAT_WDHOST: "http://selenium-standalone-chrome:4444/wd/hub"
-    MOODLE_START_BEHAT_SERVERS: "NO"
-    MOODLE_REPO: "https://gitlab-ci-token:${MOODLE_CORE_READ_ONLY}@gitlab.uni-graz.at/715-scrum1/grp_moodle/moodle.git"
-    NODE_VERSION: "16.14.0"
-  cache:
-    paths:
-      - .composer/cache
-      - $MOODLE_DIR
-      - $CI_PROJECT_DIR/ci
-  before_script:
-    # Update packages and install mysql-client.
-    - apt update && apt install -y postgresql-client postgresql-client-common
-    # Install nvm and NodeJS.
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-    - . $HOME/.nvm/nvm.sh
-    - nvm install $NODE_VERSION
-    # Install composer.
-    - curl -sS https://getcomposer.org/installer | php
-    - mv composer.phar /usr/local/bin/composer
-    # Setup Behat.
-    - export IPADDRESS=`grep "$HOSTNAME$" /etc/hosts | awk '{print $1}'`
-    - export MOODLE_BEHAT_WWWROOT="http://$IPADDRESS:8000"
-    # Install Moodle CI plugin.
-    - cd $CI_PROJECT_DIR/.. && rm -rf ci
-    - composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
-    - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
-    - chmod u+x ci/bin/moodle-plugin-ci
-    - chmod u+x ci/bin/*
-    - umask u+x
-    # Install Moodle (ommit the --moodle argument if not needed)
-    - cd $CI_PROJECT_DIR
-    # Install AMC Keys
-    - 'command -v ssh-agent >/dev/null || ( apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-add -l
-    - git config --global user.email "andre.menrath@uni-graz.at"
-    - git config --global user.name "André Menrath"
-    - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - ssh -tt gitolite@git.tsc.tuwien.ac.at
-    # Install at least the university boost theme
-    - moodle-plugin-ci add-plugin --branch $MOODLE_BRANCH --clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-mod_actsupport.git
-    - moodle-plugin-ci install --moodle=$MOODLE_DIR --db-type=pgsql --db-host=postgres -vvv
-    - cd $MOODLE_DIR
-    - php -S $IPADDRESS:8000 -t $MOODLE_DIR > /dev/null 2>&1 &
-    - php admin/tool/behat/cli/init.php --add-core-features-to-theme --parallel=1 --optimize-runs=@local_ffhs_exam_toolbox
-  parallel:
-    matrix:
-      - MOODLE_BRANCH: [MOODLE_311_STABLE]
-        MOODLE_PHP_IMAGE: ["moodlehq/moodle-php-apache:7.4"]
-        POSTGRES_IMAGE: ["postgres:10.20-alpine"]
-
-  script:
-    - moodle-plugin-ci phplint
-    - moodle-plugin-ci phpcpd
-    - moodle-plugin-ci phpmd
-    - moodle-plugin-ci codechecker
-    - moodle-plugin-ci validate
-    - moodle-plugin-ci savepoints
-    - moodle-plugin-ci mustache
-    - moodle-plugin-ci grunt
-    - moodle-plugin-ci phpdoc
-    - moodle-plugin-ci phpunit
-    #- moodle-plugin-ci behat --profile chrome
-
-deploy_dev:
+pages:
   stage: deploy
   before_script:
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
+  - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY_AMC" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
   script:
-    - rsync -avuz $CI_PROJECT_DIR/ root@143.50.129.58:/moodle/www/dev/$PLUGIN_PATH
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - ssh gitolite@git.tsc.tuwien.ac.at
