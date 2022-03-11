@@ -3,6 +3,9 @@ stages:
 
 
 deploy_dev:
+  variables:
+    MOODLE_ROOT: "/moodle/www/dev/"
+    PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
   stage: deploy
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
@@ -14,7 +17,7 @@ deploy_dev:
     - chmod 644 ~/.ssh/known_hosts
     - apt-get install rsync -y
   script:
-    - ssh root@IT129058 date
-    - rsync -avuz $CI_PROJECT_DIR/ root@143.50.129.58:/moodle/www/dev/lib/editor/atto/plugins/wordcount/
+    - rsync -avuz $CI_PROJECT_DIR/ root@143.50.129.58:${MOODLE_ROOT}${PLUGIN_PATH}
+    - ssh root@IT129058 'php ${MOODLE_ROOT}/admin/cli/upgrade.php'
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
