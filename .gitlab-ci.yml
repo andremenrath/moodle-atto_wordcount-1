@@ -5,6 +5,12 @@ stages:
 variables:
   PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
 
+
+variabletest:
+  stage: deploy
+  script:
+   - echo $TEST_VARIABLE
+
 include:
   - project: '715-scrum1/grp_moodle/continuous-integration'
     file: '.deploy-dev.yml'
