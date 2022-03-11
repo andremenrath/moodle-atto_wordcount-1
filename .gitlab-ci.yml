@@ -79,7 +79,7 @@ moodle_plugin_ci:
     - moodle-plugin-ci grunt
     - moodle-plugin-ci phpdoc
     - moodle-plugin-ci phpunit
-    - moodle-plugin-ci behat --profile chrome
+    #- moodle-plugin-ci behat --profile chrome
 
 deploy_dev:
   stage: deploy
