@@ -5,10 +5,8 @@ stages:
 variables:
   PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
 
-
-variabletest:
-  stage: deploy
-  script:
-   - echo $TEST_VARIABLE
-   - echo $read_only_token
-   - echo $READ_ONLY_TOKEN
+include:
+  - project: '715-scrum1/grp_moodle/continuous-integration'
+    file: '.gitlab-ci-template-one-job-only.yml'
+  - project: '715-scrum1/grp_moodle/continuous-integration'
+    file: '.deploy-dev.yml'
