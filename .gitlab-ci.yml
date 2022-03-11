@@ -17,6 +17,6 @@ deploy_dev:
     - apt-get install rsync -y
   script:
     # - rsync -avuz $CI_PROJECT_DIR/ root@IT129058:${MOODLE_ROOT}${PLUGIN_PATH}
-    - ssh root@IT129058 'echo $MOODLE_ROOT'
+    - ssh root@IT129058 "echo $MOODLE_ROOT"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
