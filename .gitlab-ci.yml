@@ -83,7 +83,7 @@ deploy_dev:
     - apt-get install rsync -y
   script:
     - rsync -avuz $CI_PROJECT_DIR/ root@IT129058:${MOODLE_ROOT}${PLUGIN_PATH}
-    - ssh root@IT129058 "sudo -u www-datat php ${MOODLE_ROOT}/admin/cli/upgrade.php"
+    - ssh root@IT129058 "sudo -u www-data php ${MOODLE_ROOT}/admin/cli/upgrade.php --non-interactive"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
