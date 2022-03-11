@@ -10,7 +10,5 @@ variabletest:
   stage: deploy
   script:
    - echo $TEST_VARIABLE
-
-include:
-  - project: '715-scrum1/grp_moodle/continuous-integration'
-    file: '.deploy-dev.yml'
+   - echo $read_only_token
+   - echo $READ_ONLY_TOKEN
