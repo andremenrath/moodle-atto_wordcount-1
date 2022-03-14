@@ -6,7 +6,7 @@ variables:
   PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
 
 include:
-  # - project: '715-scrum1/grp_moodle/continuous-integration'
-  #   file: '.gitlab-ci-template-one-job-only.yml'
-  - project: '715-scrum1/grp_moodle/continuous-integration'
-    file: '.gitlab-ci-deploy-dev.yml'
+  - project: '715-scrum1/grp_moodle/ci-cd-templates'
+    file:
+      - 'moodle-plugin-ci.yml'
+      - 'deploy-dev.yml'
