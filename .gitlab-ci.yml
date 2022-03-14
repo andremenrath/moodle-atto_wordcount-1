@@ -60,7 +60,14 @@ test:
     ##
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config
 
+    # For Debugging
+    - cd ~/.ssh/
+    - ls -l
+    - cat config
+    - ssh-add -l
+
     # Clone the repo from AMC
+    - cd $CI_PROJECT_DIR
     - git clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost university_boost
     - cd university_boost
     - ls -l
