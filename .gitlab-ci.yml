@@ -9,4 +9,4 @@ include:
   # - project: '715-scrum1/grp_moodle/continuous-integration'
   #   file: '.gitlab-ci-template-one-job-only.yml'
   - project: '715-scrum1/grp_moodle/continuous-integration'
-    file: '.deploy-dev.yml'
+    file: '.gitlab-ci-deploy-dev.yml'
