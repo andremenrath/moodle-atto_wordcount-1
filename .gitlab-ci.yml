@@ -54,6 +54,11 @@ test:
     ##
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'
 
+    ##
+    ## Install git
+    ##
+    - apt install git-all -y
+
     # Clone the repo from AMC
     - git clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost university_boost
     - cd university_boost
