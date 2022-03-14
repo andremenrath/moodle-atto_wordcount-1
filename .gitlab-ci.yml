@@ -40,7 +40,7 @@ test:
     ## https://gitlab.com/gitlab-examples/ssh-private-key/issues/1#note_48526556
     ##
     - echo $AMC_SSH_PRIVATE_KEY
-    - echo "$AMC_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - echo -n "$AMC_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
     ##
     ## Create the SSH directory and give it the right permissions
