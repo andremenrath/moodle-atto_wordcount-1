@@ -18,6 +18,11 @@ test:
   stage: test
   before_script:
     ##
+    ## Install git
+    ##
+    - apt install git-all -y
+
+    ##
     ## Install ssh-agent if not already installed, it is required by Docker.
     ## (change apt-get to yum if you use an RPM-based image)
     ##
@@ -53,11 +58,6 @@ test:
     ## Disable host key checking for testing (see https://docs.gitlab.com/ee/ci/ssh_keys/)
     ##
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config'
-
-    ##
-    ## Install git
-    ##
-    - apt install git-all -y
 
     # Clone the repo from AMC
     - git clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost university_boost
