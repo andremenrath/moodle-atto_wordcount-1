@@ -20,7 +20,7 @@ test:
     ##
     ## Install git
     ##
-    - apt install git-all -y
+    - apt-get install git -y
 
     ##
     ## Install ssh-agent if not already installed, it is required by Docker.
