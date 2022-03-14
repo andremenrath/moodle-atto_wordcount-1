@@ -1,76 +1,12 @@
-# stages:
-#   - test
-#   - deploy
-
-# variables:
-#   PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
-
-# include:
-#   - project: '715-scrum1/grp_moodle/ci-cd-templates'
-#     file:
-#       - 'moodle-plugin-ci.yml'
-#       - 'deploy-dev.yml'
-
 stages:
   - test
+  - deploy
 
-test:
-  stage: test
-  before_script:
-    ##
-    ## Install git
-    ##
-    - apt-get update -y && apt-get install git -y
+variables:
+  PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
 
-    ##
-    ## Install ssh-agent if not already installed, it is required by Docker.
-    ## (change apt-get to yum if you use an RPM-based image)
-    ##
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-
-    ##
-    ## Run ssh-agent (inside the build environment)
-    ##
-    - eval $(ssh-agent -s)
-
-    ##
-    ## Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-    ## We're using tr to fix line endings which makes ed25519 keys work
-    ## without extra base64 encoding.
-    ## https://gitlab.com/gitlab-examples/ssh-private-key/issues/1#note_48526556
-    ##
-    - echo $AMC_SSH_PRIVATE_KEY
-    - echo -n "$AMC_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-
-    ##
-    ## Create the SSH directory and give it the right permissions
-    ##
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-
-    ##
-    ## Optionally, if you will be using any Git commands, set the user name and
-    ## and email.
-    ##
-    - git config --global user.email "user@example.com"
-    - git config --global user.name "User name"
-
-    ##
-    ## Disable host key checking for testing (see https://docs.gitlab.com/ee/ci/ssh_keys/)
-    ##
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config
-
-    # For Debugging
-    - cd ~/.ssh/
-    - ls -l
-    - cat config
-    - ssh-add -l
-
-    # Clone the repo from AMC
-    - cd $CI_PROJECT_DIR
-    - git clone ssh://gitolite@git.tsc.tuwien.ac.at/moodle-theme_university_boost university_boost
-    - cd university_boost
-    - ls -l
-  script:
-    - echo "hello world"
-
+include:
+  - project: '715-scrum1/grp_moodle/ci-cd-templates'
+    file:
+      - 'moodle-plugin-ci.yml'
+      - 'deploy-dev.yml'
