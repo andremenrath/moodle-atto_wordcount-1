@@ -20,6 +20,8 @@ Update ansible script:
     - 'command -v wget >/dev/null || ( apt-get update -y && apt-get install wget -y )'
     - wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
     - chmod a+x /usr/local/bin/yq
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GITLAB_USER_NAME}"
   script:
     - export
     - git clone https://gitlab-ci-token:${DEPLOYMENT_READ_WRITE}@gitlab.uni-graz.at/715-scrum1/grp_moodle/deployment.git
