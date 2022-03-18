@@ -30,5 +30,5 @@ Update ansible script:
     - yq -i '(.internal_plugins.[] | select(.name == "${PLUGIN_NAME}")).version = "${CI_COMMIT_SHORT_SHA}"' plugins/config/inhouse_plugins.yml
     - git add plugins/config/inhouse_plugins.yml
     - git commit -m "nur ein deployment test"
-    - git push
+    - git push --set-upstream origin deployment_test
   when: manual
