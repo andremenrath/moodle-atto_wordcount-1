@@ -21,6 +21,7 @@ Update ansible script:
     - wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
     - chmod a+x /usr/local/bin/yq
   script:
+    - export
     - git clone https://gitlab-ci-token:${DEPLOYMENT_READ_WRITE}@gitlab.uni-graz.at/715-scrum1/grp_moodle/deployment.git
     - cd deployment
     - git checkout -b deployment_test
