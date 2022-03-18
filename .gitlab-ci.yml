@@ -1,12 +1,18 @@
 stages:
-  - test
-  - deploy
+  - echo
+#  - test
+#  - deploy
 
 variables:
   PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
 
-include:
-  - project: '715-scrum1/grp_moodle/ci-cd-templates'
-    file:
-      - 'moodle-plugin-ci.yml'
-      - 'deploy-dev.yml'
+#include:
+#  - project: '715-scrum1/grp_moodle/ci-cd-templates'
+#    file:
+#      - 'moodle-plugin-ci.yml'
+#      - 'deploy-dev.yml'
+
+echo:
+  stage: echo
+  script:
+    - echo ${GROUP_READ_ONLY_TOKEN}
