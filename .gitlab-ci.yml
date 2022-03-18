@@ -13,13 +13,13 @@ variables:
 #      - 'deploy-dev.yml'
 
 
-update_ansible:
+Update ansible script:
   stage: deploy
   before_script:
     - 'command -v git >/dev/null || ( apt-get update -y && apt-get install git -y )'
     - 'command -v wget >/dev/null || ( apt-get update -y && apt-get install wget -y )'
-    - wget -qO yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-    - chmod a+x yq
+    - wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+    - chmod a+x /usr/local/bin/yq
   script:
     - git clone https://gitlab-ci-token:${DEPLOYMENT_READ_WRITE}@gitlab.uni-graz.at/715-scrum1/grp_moodle/deployment.git
     - cd deployment
