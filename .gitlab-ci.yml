@@ -3,7 +3,7 @@ stages:
   - deploy
 
 variables:
-  PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
+  PLUGIN_PATH: "lib/editor/atto/plugins/"
   PLUGIN_NAME: wordcount
 
 include:
