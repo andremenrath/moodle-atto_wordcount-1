@@ -9,5 +9,5 @@ variables:
 include:
   - project: '715-scrum1/grp_moodle/ci-cd-templates'
     file:
-      - 'moodle-plugin-ci.yml'
+    #  - 'moodle-plugin-ci.yml'
       - 'deploy.yml'
