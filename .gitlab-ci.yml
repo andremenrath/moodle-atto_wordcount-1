@@ -6,29 +6,8 @@ variables:
   PLUGIN_PATH: "lib/editor/atto/plugins/wordcount/"
   PLUGIN_NAME: wordcount
 
-#include:
-#  - project: '715-scrum1/grp_moodle/ci-cd-templates'
-#    file:
-#      - 'moodle-plugin-ci.yml'
-#      - 'deploy-dev.yml'
-
-
-Update ansible script:
-  stage: deploy
-  before_script:
-    - 'command -v git >/dev/null || ( apt-get update -y && apt-get install git -y )'
-    - 'command -v wget >/dev/null || ( apt-get update -y && apt-get install wget -y )'
-    - wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-    - chmod a+x /usr/local/bin/yq
-    - git config --global user.email "${GITLAB_USER_EMAIL}"
-    - git config --global user.name "${GITLAB_USER_NAME}"
-  script:
-    - export
-    - git clone https://gitlab-ci-token:${DEPLOYMENT_READ_WRITE}@gitlab.uni-graz.at/715-scrum1/grp_moodle/deployment.git
-    - cd deployment
-    - git checkout -b deployment_test
-    - yq -i '(.forked_plugins.[] | select(.name == env(PLUGIN_NAME))).version = env(CI_COMMIT_SHORT_SHA)' plugins/config/forked_plugins.yml
-    - git add plugins/config/forked_plugins.yml
-    - git commit -m "nur ein deployment test"
-    - git push --set-upstream origin deployment_test
-  # when: manual
+include:
+  - project: '715-scrum1/grp_moodle/ci-cd-templates'
+    file:
+      - 'moodle-plugin-ci.yml'
+      - 'deploy.yml'
