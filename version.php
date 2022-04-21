@@ -19,14 +19,14 @@
  *
  * @package    atto_wordcount
  * @copyright  2011 Avi Levy <avi@sysbind.co.il>
-               2022 Graz University
+ *             2022 Graz University
  *             2022 André Menrath <andre.menrath@uni-graz.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022042000;
+$plugin->version = 2022042001;
 $plugin->requires = 2014051200;
 $plugin->component = 'atto_wordcount';
 $plugin->release = '1.2.1';

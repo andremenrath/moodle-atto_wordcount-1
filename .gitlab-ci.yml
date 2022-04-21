@@ -11,3 +11,10 @@ include:
     file:
       - 'moodle-plugin-ci.yml'
       - 'deploy.yml'
+
+# Overide Moodle Branches, this version only works with Moodle 4.0
+# For Moodle 3.11+ see other uniGraz/MOOBLE_311_STABLE branch
+moodle_plugin_ci:
+  parallel:
+    matrix:
+      - MOODLE_BRANCH: [MOODLE_400_STABLE]
