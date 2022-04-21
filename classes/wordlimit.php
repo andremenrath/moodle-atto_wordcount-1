@@ -75,17 +75,18 @@ class wordlimit {
      * @return array  $wordlimits
      */
     protected static function get_wordlimits_for_essay_in_quiz($quizid, $page) {
-        global $DB;
+        global $DB, $USER;
         // Make a database query to see if a maxwordlimit is set on this question.
         // We need to also select slot, because the slot is unique here: there might be multiple
         // editors with the same wordlimit on the same page, and then only the first would be returned.
-        $sql = "SELECT slot, maxwordlimit
+        $sql = "SELECT {question_attempts}.slot, {qtype_essay_options}.maxwordlimit
                 FROM {qtype_essay_options}
-                INNER JOIN {quiz_slots}
-                ON {qtype_essay_options}.questionid = {quiz_slots}.questionid
-                WHERE quizid = ? AND page = ?
-                ORDER BY slot";
-        $wordlimits = $DB->get_records_sql( $sql, [$quizid, $page] );
+                JOIN {question_attempts} ON {question_attempts}.questionid = {qtype_essay_options}.questionid
+                JOIN {quiz_attempts} ON  {quiz_attempts}.uniqueid = {question_attempts}.questionusageid
+                JOIN {quiz_slots} ON {quiz_slots}.quizid = {quiz_attempts}.quiz AND {quiz_slots}.slot = {question_attempts}.slot
+                WHERE {quiz_attempts}.quiz = ? AND {quiz_slots}.page = ? AND {quiz_attempts}.userid = ?
+                ORDER BY slot;";
+        $wordlimits = $DB->get_records_sql( $sql, [$quizid, $page, $USER->id] );
         $wordlimits = array_column( $wordlimits, 'maxwordlimit' );
         return $wordlimits;
     }
