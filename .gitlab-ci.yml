@@ -6,10 +6,6 @@ variables:
   PLUGIN_PATH: "lib/editor/atto/plugins/"
   PLUGIN_NAME: wordcount
 
-.add_plugin_dependecies:
-  before_script:
-    - echo "No dependencies"
-
 include:
   - project: '715-scrum1/grp_moodle/ci-cd-templates'
     file:
