@@ -8,8 +8,9 @@ The count is change will the user type or change the Atto editor content.
 Additionally next to the word counter the wordlimit will be displayed if one is set.
 
 You can see examples in the screenshots bellow.
+
 ## Requirements
-- Moodle 2.7 or later.
+- Moodle 3.11 or later.
 
 ## Installation
 1. Add the plugin to /lib/editor/atto/plugins
