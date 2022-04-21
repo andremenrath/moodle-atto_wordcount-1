@@ -63,7 +63,11 @@ Feature: Atto wordcount button
 
   @javascript
   Scenario: Count words on atto is Words With Multimedia
-    Given I am on homepage
+    Given the following "blocks" exist:
+      | blockname     | contextlevel | reference | pagetypepattern | defaultregion |
+      | private_files | System       | 1         | my-index        | side-post     |
+    And I log in as "admin"
+    And I change window size to "large"
     And I follow "Manage private files..."
     And I upload "lib/editor/atto/tests/fixtures/moodle-logo.webm" file to "Files" filemanager
     And I upload "lib/editor/atto/tests/fixtures/moodle-logo.mp4" file to "Files" filemanager
@@ -173,7 +177,7 @@ Feature: Atto wordcount button
       | heading   | firstslot | shuffle |
       | Section 1 | 1         | 0       |
     When I am on the "Quiz 1" "mod_quiz > View" page logged in as "student1"
-    And I press "Attempt quiz now"
+    And I press "Attempt quiz"
     Then I should see "Section 1" in the "Quiz navigation" "block"
     And I wait until the page is ready
     And I set the following fields to these values:
@@ -201,7 +205,7 @@ Feature: Atto wordcount button
       | heading   | firstslot | shuffle |
       | Section 1 | 1         | 0       |
     When I am on the "Quiz 1" "mod_quiz > View" page logged in as "student1"
-    And I press "Attempt quiz now"
+    And I press "Attempt quiz"
     Then I should see "Section 1" in the "Quiz navigation" "block"
     And I wait until the page is ready
     And I set the following fields to these values:
@@ -240,7 +244,7 @@ Feature: Atto wordcount button
       | Section 1 | 1         | 0       |
       | Section 2 | 5         | 0       |
     When I am on the "Quiz 1" "mod_quiz > View" page logged in as "student1"
-    And I press "Attempt quiz now"
+    And I press "Attempt quiz"
     Then I should see "Section 1" in the "Quiz navigation" "block"
     And I wait until the page is ready
     And I set the following fields to these values:
