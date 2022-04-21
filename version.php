@@ -19,6 +19,7 @@
  *
  * @package    atto_wordcount
  * @copyright  2011 Avi Levy <avi@sysbind.co.il>
+               2022 Graz University
  *             2022 André Menrath <andre.menrath@uni-graz.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
