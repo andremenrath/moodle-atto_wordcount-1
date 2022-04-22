@@ -69,7 +69,7 @@ class wordlimit {
     /**
      * Get the wordlimits for an essay of a certain page inside a quiz.
      *
-     * @param int     $quizid the instance-id of the quiz
+     * @param int     $attempdid the attempd-id of the quiz
      * @param string  $page the number of the page as in the database, offset +1 in the frontend.
      * @return array  $wordlimits
      */
