@@ -66,7 +66,6 @@ class wordlimit {
         return null;
     }
 
-
     /**
      * Get the wordlimits for an essay of a certain page inside a quiz.
      *
@@ -74,8 +73,8 @@ class wordlimit {
      * @param string  $page the number of the page as in the database, offset +1 in the frontend.
      * @return array  $wordlimits
      */
-    protected static function get_wordlimits_for_essay_in_quiz($quizid, $page) {
-        global $DB, $USER;
+    protected static function get_wordlimits_for_essay_in_quiz($attempdid, $page) {
+        global $DB;
         // Make a database query to see if a maxwordlimit is set on this question.
         // We need to also select slot, because the slot is unique here: there might be multiple
         // editors with the same wordlimit on the same page, and then only the first would be returned.
@@ -84,13 +83,12 @@ class wordlimit {
                 JOIN {question_attempts} ON {question_attempts}.questionid = {qtype_essay_options}.questionid
                 JOIN {quiz_attempts} ON  {quiz_attempts}.uniqueid = {question_attempts}.questionusageid
                 JOIN {quiz_slots} ON {quiz_slots}.quizid = {quiz_attempts}.quiz AND {quiz_slots}.slot = {question_attempts}.slot
-                WHERE {quiz_attempts}.quiz = ? AND {quiz_slots}.page = ? AND {quiz_attempts}.userid = ?
+                WHERE {quiz_attempts}.id = ? AND {quiz_slots}.page = ?
                 ORDER BY slot;";
-        $wordlimits = $DB->get_records_sql( $sql, [$quizid, $page, $USER->id] );
+        $wordlimits = $DB->get_records_sql( $sql, array( $attempdid, $page ) );
         $wordlimits = array_column( $wordlimits, 'maxwordlimit' );
         return $wordlimits;
     }
-
 
     /**
      * Get the wordlimit depending on the type of page which is beein edited.
@@ -104,8 +102,11 @@ class wordlimit {
         // Define the parameter array which is served to the javascript of the plugin.
         $wordlimits = array( null );
 
+        $path = $PAGE->url->get_path();
+
         // Check if we are on a page where the users submits/edits an onlinetext for an assignment.
-        if ( '/mod/assign/view.php' === $PAGE->url->get_path() && 'editsubmission' === $PAGE->url->get_param('action') ) {
+        $action = optional_param('action', null, PARAM_ALPHANUMEXT);
+        if ( '/mod/assign/view.php' === $path && 'editsubmission' === $action ) {
             $id = $PAGE->cm->instance;
             $wordlimit = self::get_wordlimit_for_onlinesubmission($id);
             // We have to pass wordlimits as an array.
@@ -114,14 +115,14 @@ class wordlimit {
             return $wordlimits;
         }
 
-        if ( '/mod/quiz/attempt.php' === $PAGE->url->get_path() && "mod-quiz-attempt" === $PAGE->pagetype ) {
-            // The quiz-id is the current course-module id.
-            $quizid = intval( $PAGE->cm->instance );
+        if ( '/mod/quiz/attempt.php' === $path && "mod-quiz-attempt" === $PAGE->pagetype ) {
+            // The attempt id is a required parameter for the quiz/attemp.php page.
+            $attemptid = required_param('attempt', PARAM_INT);
             // See on which page of the quiz we are.
-            $page = $PAGE->url->get_param( 'page' );
+            $page = optional_param('page', 0, PARAM_INT);
             // The page in the URL Params is starting with zero, in the database they start with 1. So there is an offset.
-            ( null === $page ) ? $page = "1" : $page = intval( $page ) + 1;
-            $wordlimits = self::get_wordlimits_for_essay_in_quiz( $quizid, $page );
+            $page = $page + 1;
+            $wordlimits = self::get_wordlimits_for_essay_in_quiz( $attemptid, $page );
         }
 
         return $wordlimits;
